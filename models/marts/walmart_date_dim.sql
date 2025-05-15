@@ -1,5 +1,5 @@
 {{ config(
-    materialized='table',
+    materialized='incremental',
     unique_key='date_id'
 ) }}
 
@@ -10,7 +10,7 @@ with source as (
 
 mapped as (
     select 
-        cast(to_char(store_date, 'YYYYMMDD') as integer) as date_id,
+        to_varchar(store_date) as date_id,
         store_date,
         case 
             when is_holiday = true then 'Y'
