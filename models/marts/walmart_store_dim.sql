@@ -1,38 +1,29 @@
 {{ config(
     materialized='incremental',
-    unique_key='store_id',
-    incremental_strategy='merge'
+    unique_key=['store_id', 'dept_id']
 ) }}
 
-with incoming_data as (
-    select
-        store_id,
-        store_type,
-        store_size,
-        insert_date,
-        update_date,
-        vrsn_start_date,
-        vrsn_end_date
+with store_source as (
+    select * 
     from {{ ref('stg_walmart_store') }}
 ),
 
-existing_records as (
-    select *
-    from {{ this }}
-    where vrsn_end_date is null
+date_source as (
+    select * 
+    from {{ ref('stg_walmart_date') }}
 ),
 
-changed_records as (
-    select
-        inc.*
-    from incoming_data inc
-    left join existing_records ex
-        on inc.store_id = ex.store_id
-    where
-        ex.store_id is null  -- new store
-        or inc.store_type != ex.store_type
-        or inc.store_size != ex.store_size
+mapped as (
+    select 
+        s.store_id as store_id,
+        d.dept_id as dept_id,
+        s.store_type as store_type,
+        s.store_size as store_size,
+        CURRENT_TIMESTAMP as insert_date,
+        CURRENT_TIMESTAMP as update_date
+    from store_source s
+    left join date_source d
+    on d.store_id = s.store_id
 )
 
--- Final output
-select * from changed_records
+select * from mapped
