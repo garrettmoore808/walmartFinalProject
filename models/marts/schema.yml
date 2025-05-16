@@ -1,0 +1,13 @@
+# models/marts/schema.yml
+
+version: 2
+
+models:
+  - name: walmart_date_dim
+    description: "SCD1 Date dimension for Walmart sales"
+    columns:
+      - name: date_id
+        description: "Surrogate key for each store-date-dept combination"
+        tests:
+          - unique
+          - not_null

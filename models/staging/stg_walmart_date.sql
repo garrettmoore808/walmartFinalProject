@@ -6,7 +6,7 @@ with source as (
 renamed as (
     select
         store_id,
-        dept_id 
+        dept_id,
         store_date,
         weekly_sales,
         is_holiday,
