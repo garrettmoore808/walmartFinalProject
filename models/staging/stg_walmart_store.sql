@@ -5,7 +5,5 @@ select
     cast(store_type as varchar) as store_type,
     cast(store_size as integer) as store_size,
     current_timestamp as insert_date,
-    current_timestamp as update_date,
-    current_timestamp as vrsn_start_date,
-    null as vrsn_end_date
+    current_timestamp as update_date
 from {{ source('raw', 'walmart_store') }}
