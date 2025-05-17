@@ -5,7 +5,7 @@ WITH source AS (
 
 renamed AS (
     select
-        cast(to_char(store_date, 'YYYYMMDD') as integer) as date_id,
+        cast(store_date as date) as date_id,
         cast(store_id as integer) as store_id,
         cast(fuel_price as decimal(10,4)) as fuel_price,
         cast(temperature as decimal(10,2)) as store_temperature,

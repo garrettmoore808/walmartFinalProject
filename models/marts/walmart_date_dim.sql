@@ -10,12 +10,8 @@ with source as (
 
 mapped as (
     select 
-        cast(
-            to_char(store_date, 'YYYYMMDD') || 
-            lpad(cast(store_id as varchar), 5, '0') || 
-            lpad(cast(dept_id as varchar), 3, '0')
-        as bigint) as date_id,
-        cast(store_date as date) as store_date,
+        {{ dbt_utils.generate_surrogate_key(['store_id', 'dept_id', 'store_date']) }} as date_id,
+        store_date,
         case 
             when is_holiday = true then 'Y'
             else 'N'

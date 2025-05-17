@@ -1,5 +1,3 @@
-# models/marts/schema.yml
-
 version: 2
 
 models:
@@ -10,4 +8,13 @@ models:
         description: "Surrogate key for each store-date-dept combination"
         tests:
           - unique
+          - not_null
+  - name: walmart_store_dim
+    description: "Store dimension for Walmart data"
+    columns:
+      - name: store_id
+        tests:
+          - not_null
+      - name: dept_id
+        tests:
           - not_null
